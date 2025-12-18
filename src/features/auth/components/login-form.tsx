@@ -79,7 +79,19 @@ export function LoginForm() {
                         className="w-full"
                         type="button"
                         disabled={isPending}>
+                          <Image alt="Google" src='/google.svg' width={20}height={20}/>
                             Continue with Google  
+                            </Button>                      
+                    </div>
+
+                    <div className="flex flex-col gap-4">
+                        <Button
+                        variant="outline"
+                        className="w-full"
+                        type="button"
+                        disabled={isPending}>
+                          <Image alt="GitHub" src='/github.svg' width={20}height={20}/>
+                            Continue with GitHub  
                             </Button>                      
                     </div>
                 </div>
@@ -117,7 +129,7 @@ export function LoginForm() {
                     )}
                     />
                     <Button type="submit"
-                    className="w-full" disabled=
+                    className="w-full bg-orange-600" disabled=
                     {isPending}>
                         Login
                     </Button>

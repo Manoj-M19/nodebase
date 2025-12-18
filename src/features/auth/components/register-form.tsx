@@ -27,48 +27,46 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
 
-
-const registerSchema = z.object({
-  email: z.email("Please enter a valid address"),
-  password: z.string().min(1, "Password is required"),
-  confirmPassword:z.string(),
-})
-.refine((data)=> data.password === data.confirmPassword, {
-    message:"Passwords don't match",
-    path:["confirmPassword"]
-});
+const registerSchema = z
+  .object({
+    email: z.email("Please enter a valid address"),
+    password: z.string().min(1, "Password is required"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
 
 type RegisterFromValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-    const router = useRouter();
+  const router = useRouter();
 
   const form = useForm<RegisterFromValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword:"",
+      confirmPassword: "",
     },
   });
 
   const onSubmit = async (values: RegisterFromValues) => {
     await authClient.signUp.email(
       {
-        name:values.email,
-        email:values.email,
-        password:values.password,
-        callbackURL:"/",
+        name: values.email,
+        email: values.email,
+        password: values.password,
+        callbackURL: "/",
       },
       {
-        onSuccess:() => {
+        onSuccess: () => {
           router.push("/");
         },
-        onError:(ctx) => {
-          
-        }
+        onError: (ctx) => {},
       }
-    )
+    );
   };
 
   const isPending = form.formState.isSubmitting;
@@ -83,89 +81,106 @@ export function RegisterForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
-                <div className="grid gap-6">
-                    <div className="flex flex-col gap-4">
-                        <Button
-                        variant="outline"
-                        className="w-full"
-                        type="button"
-                        disabled={isPending}>
-                            Continue with Google  
-                            </Button>                      
-                    </div>
-                      <div className="flex flex-col gap-4 mb-5">
-                        <Button
-                        variant="outline"
-                        className="w-full"
-                        type="button"
-                        disabled={isPending}>
-                            Continue with GitHub  
-                            </Button>                      
-                    </div>
-                </div>
-                <div className="grid gap-6">
-                    <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field}) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input 
-                                type="email"
-                                placeholder="m@example.com"
-                                {...field}/>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
+              <div className="grid gap-6">
+                <div className="flex flex-col gap-4">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    type="button"
+                    disabled={isPending}
+                  >
+                    <Image
+                      alt="Google"
+                      src="/google.svg"
+                      width={20}
+                      height={20}
                     />
-                     <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field}) => (
-                        <FormItem>
-                            <FormLabel>password</FormLabel>
-                            <FormControl>
-                                <Input 
-                                type="password"
-                                placeholder="*******"
-                                {...field}/>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                    />
-                     <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field}) => (
-                        <FormItem>
-                            <FormLabel>confirm Password</FormLabel>
-                            <FormControl>
-                                <Input 
-                                type="password"
-                                placeholder="*******"
-                                {...field}/>
-                            </FormControl>
-                            <FormMessage/>
-                        </FormItem>
-                    )}
-                    />
-                    <Button type="submit"
-                    className="w-full" disabled=
-                    {isPending}>
-                        Signup
-                    </Button>
+                    Continue with Google
+                  </Button>
                 </div>
-                <div className="text-center text-sm">
-                   Already have an account?{" "}
-                    <Link href="/login"
-                    className="underline
-                    underline-offset-4">
-                        Login
-                    </Link>
+                <div className="flex flex-col gap-4 mb-5">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    type="button"
+                    disabled={isPending}
+                  >
+                    <Image
+                      alt="GitHub"
+                      src="/github.svg"
+                      width={20}
+                      height={20}
+                    />
+                    Continue with GitHub
+                  </Button>
                 </div>
+              </div>
+              <div className="grid gap-6">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="m@example.com"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="*******"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>confirm Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="*******"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" className="w-full bg-orange-600" disabled={isPending}>
+                  Signup
+                </Button>
+              </div>
+              <div className="text-center text-sm">
+                Already have an account?{" "}
+                <Link
+                  href="/login"
+                  className="underline
+                    underline-offset-4"
+                >
+                  Login
+                </Link>
+              </div>
             </form>
           </Form>
         </CardContent>
@@ -173,5 +188,3 @@ export function RegisterForm() {
     </div>
   );
 }
-
-
