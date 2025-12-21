@@ -8,6 +8,13 @@ export const appRouter = createTRPCRouter({
     
     });
   }),
+  createWorkflow:protectedProcedure.mutation(()=> {
+    return prisma.workflow.create({
+      data:{
+        name:"test-workflow"
+      },
+    })
+  })
 
 });
 // export type definition of API
