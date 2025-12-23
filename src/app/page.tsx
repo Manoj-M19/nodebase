@@ -1,40 +1,43 @@
 "use client";
-import { LogoutButton } from "./logout";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useTRPC } from "@/trpc/client";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { useTRPC } from "@/trpc/client";
+import { LogoutButton } from "./logout";
 
-const Page =  () => {
+const Page = () => {
   const trpc = useTRPC();
-  const queryClient = useQueryClient();
-  const {data} = useQuery(trpc.getWorkflows.queryOptions());
+  const _queryClient = useQueryClient();
+  const { data } = useQuery(trpc.getWorkflows.queryOptions());
 
-  const testAi = useMutation(trpc.testAi.mutationOptions({
-    onSuccess:() => {
-      toast.success("Job queued successfully");
-    }
-  }));
+  const testAi = useMutation(
+    trpc.testAi.mutationOptions({
+      onSuccess: () => {
+        toast.success("Job queued successfully");
+      },
+      onError: () => {
+        toast.success("Something went wrong");
+      },
+    }),
+  );
 
-  const create = useMutation(trpc.createWorkflow.mutationOptions({
-    onSuccess:() => {
-      toast.success("Job queued successfully");
-    }
-  }));
+  const create = useMutation(
+    trpc.createWorkflow.mutationOptions({
+      onSuccess: () => {
+        toast.success("Job queued successfully");
+      },
+    }),
+  );
 
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center flex-col gap-y-6">
       protected server component
-      <div>
-  {JSON.stringify(data,null,2)}
-      </div>
-      <Button  disabled={testAi.isPending} onClick={() => testAi.mutate()}>
+      <div>{JSON.stringify(data, null, 2)}</div>
+      <Button disabled={testAi.isPending} onClick={() => testAi.mutate()}>
         Test AI
       </Button>
-      <Button onClick={()=>create.mutate()}>
-         Create Workflow
-        </Button>
-    <LogoutButton/>
+      <Button onClick={() => create.mutate()}>Create Workflow</Button>
+      <LogoutButton />
     </div>
   );
 };
