@@ -1,3 +1,5 @@
+"use client";
+
 import { useSuspenseWorkflows } from "../hooks/use-work"
 
 export const WorkflowsList = () => {
