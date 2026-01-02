@@ -11,3 +11,11 @@ export const WorkflowsList = () => {
         </p>
     )
 }
+
+export const WorkflowsHeader = ({ disabled }: { disbaled?: boolean}) => {
+    return (
+        <EntityHeader
+        title="Workflows"
+        de
+    )
+}
